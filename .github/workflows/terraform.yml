@@ -1,6 +1,7 @@
 name: "Terraform Direct Flow"
 
 on:
+    workflow_dispatch:
     push:
         branches:
             - master
