@@ -1,0 +1,7 @@
+# Ignora todas as pastas .terraform e seus conteúdos
+**/.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.tfstate.lock.info
+
+.terraform/
