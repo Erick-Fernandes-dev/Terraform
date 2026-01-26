@@ -3,12 +3,12 @@ name: "Terraform Direct Flow"
 on:
     push:
         branches:
-            - main
+            - master
         paths:
             - "Templates_Terraform/**"
     pull_request:
         branches:
-            - main
+            - master
         paths:
             - "Templates_Terraform/**"
 
