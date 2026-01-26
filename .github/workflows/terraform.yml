@@ -27,6 +27,15 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
             
+            - name: Debug Secrets
+              run: |
+                if [ -n "${{ secrets.AWS_ACCESS_KEY_ID }}" ]; then
+                  echo "A chave ID está presente (valor mascarado)"
+                else
+                  echo "ERRO: A chave ID está VAZIA"
+                  exit 1
+                fi
+            
             # Configurando as credenciais da AWS
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@v4
