@@ -16,16 +16,26 @@ resource "aws_api_gateway_resource" "res" {
   
 }
 
+# 1. Primeiro declaramos o MÉTODO
+resource "aws_api_gateway_method" "method" {
+  rest_api_id   = aws_api_gateway_rest_api.this.id
+  resource_id   = aws_api_gateway_resource.res.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
 # Esse resource cria um método http para o recurso criado anteriormente. Ele é configurado para aceitar 
 #requisições POST e é associado ao recurso e à API criados anteriormente.
 resource "aws_api_gateway_integration" "int" {
-    rest_api_id = aws_api_gateway_rest_api.this.id
-    resource_id = aws_api_gateway_resource.res.id
-    http_method = aws_api_gateway_method.method.http_method
-    integration_http_method = "POST"
-    type = "AWS_PROXY"
-    uri = var.lambda_invoke_arn
+  rest_api_id = aws_api_gateway_rest_api.this.id
+  resource_id = aws_api_gateway_resource.res.id
   
+  # Aqui deve bater com o nome do bloco acima: "method"
+  http_method = aws_api_gateway_method.method.http_method
+
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = var.lambda_invoke_arn
 }
 
 # Esse resource do aws_lambda_permission é necessário para permitir que a API Gateway invoque a função Lambda. 
