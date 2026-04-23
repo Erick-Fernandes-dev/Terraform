@@ -16,7 +16,8 @@ on:
 env:
     AWS_REGION: us-east-1
     # Defina aqui a pasta do template que quer testar/aplicar
-    WORKING_DIR: "Templates_Terraform/EventBridge"
+    #WORKING_DIR: "Templates_Terraform/EventBridge"
+    WORKING_DIR: "Templates_Terraform/API_Gateway_com_Lambda"
 
 jobs:
     terraform-automation:
