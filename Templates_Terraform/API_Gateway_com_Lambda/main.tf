@@ -17,3 +17,10 @@ module "meu_api_gateway" {
     lambda_name = module.meu_lambda.function_name
     lambda_invoke_arn = module.meu_lambda.invoke_arn
 }
+
+# Chamando modulo de monitoring
+module "monitoramento" {
+    source = "./modules/monitoring"
+    function_name = module.meu_lambda.function_name
+    api_name = var.nome_da_api
+}

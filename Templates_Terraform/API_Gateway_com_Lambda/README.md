@@ -43,25 +43,37 @@ A função é capaz de identificar o nome enviado tanto por **URL Query Paramete
 
 ```javascript
 export const handler = async (event) => {
-    let nome = "Visitante";
+  console.log("Evento recebido:", JSON.stringify(event, null, 2));
 
-    // Busca o nome no ?nome=Erick
-    if (event.queryStringParameters && event.queryStringParameters.nome) {
-        nome = event.queryStringParameters.nome;
-    } 
-    // Busca o nome no JSON {"nome": "Erick"}
-    else if (event.body) {
-        const body = JSON.parse(event.body);
-        nome = body.nome || nome;
-    }
+  let nome = "Visitante";
 
-    return {
-        statusCode: 200,
-        body: JSON.stringify({
-            mensagem: `Olá, ${nome}! Tudo funcionando via Terraform! 🚀`,
-            timestamp: new Date().toISOString()
-        }),
-    };
+  try {
+      // 1. Tenta pegar o nome via Query String (ex: api.com/test?nome=Junior)
+      if (event.queryStringParameters && event.queryStringParameters.nome) {
+          nome = event.queryStringParameters.nome;
+      } 
+      // 2. Tenta pegar o nome via Body (POST)
+      else if (event.body) {
+          const body = JSON.parse(event.body);
+          nome = body.nome || nome;
+      }
+  } catch (error) {
+      console.error("Erro ao processar input:", error);
+  }
+
+  const response = {
+      statusCode: 200,
+      headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*" // Importante para evitar erros de CORS
+      },
+      body: JSON.stringify({
+          mensagem: `Olá, ${nome}! Função executada com sucesso.`,
+          timestamp: new Date().toISOString()
+      }),
+  };
+
+  return response;
 };
 ```
 
@@ -106,5 +118,10 @@ curl -X POST https://sua-api.execute-api.us-east-1.amazonaws.com/dev/hello \
 * **Logs:** Se algo der errado, verifique o **CloudWatch Logs** da sua Lambda no Console AWS. 🪵
 
 ---
+
+
+Por fim, quando foe executado o comando git push vai executar um pipeline no github actions, para validar, testar e formartar o nosso template terraform.
+
+![alt text](image.png)
 
 **Desenvolvido com ❤️ e Terraform!** 🛠️✨
